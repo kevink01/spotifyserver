@@ -1,0 +1,5 @@
+# Installs
+node_modules/
+
+#Environment
+.env
