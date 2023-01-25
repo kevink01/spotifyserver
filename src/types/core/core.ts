@@ -4,3 +4,11 @@ export interface Core {
 	type: string;
 	uri: string;
 }
+
+export interface Snapshot {
+	snapshot: string;
+}
+
+export interface Success {
+	success: boolean;
+}

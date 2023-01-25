@@ -1,4 +1,4 @@
-export { Core } from './core';
+export { Core, Snapshot, Success } from './core';
 export { Login } from './login';
 export { Image } from './image';
 export { Profile } from './profile';
@@ -9,3 +9,4 @@ export { Artist } from './artist';
 export { Album } from './album';
 export { Copyright } from './copyright';
 export { Follower } from './follower';
+export { PlaylistDetails } from './playlistDetails';

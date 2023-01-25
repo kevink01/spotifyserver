@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import SpotifyWebApi from 'spotify-web-api-node';
 import { Login } from './types/core';
-import { profileRoutes, userRoutes } from './routes';
+import { playlistRoutes, profileRoutes, userRoutes } from './routes';
 
 const app = express();
 app.use(cors());
@@ -36,6 +36,7 @@ app.use((req: Request, _res: Response, next: NextFunction) => {
 
 app.use('/user', userRoutes);
 app.use('/profile', profileRoutes);
+app.use('/playlist', playlistRoutes);
 
 app.listen(config.port, () => {
 	logger.info(`Listening on port ${config.port}`);
