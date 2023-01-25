@@ -41,11 +41,9 @@ app.listen(config.port, () => {
 });
 
 app.post('/login', (req: Request, res: Response) => {
-	logger.info(JSON.parse(req.body.code));
 	spotify
 		.authorizationCodeGrant(JSON.parse(req.body.code))
 		.then((data) => {
-			logger.info(data);
 			spotify.setAccessToken(data.body.access_token);
 			spotify.setRefreshToken(data.body.refresh_token);
 			res.status(200).send(login(data));
