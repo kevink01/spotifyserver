@@ -8,3 +8,4 @@ export { Playlist } from './playlist';
 export { Artist } from './artist';
 export { Album } from './album';
 export { Copyright } from './copyright';
+export { Follower } from './follower';
