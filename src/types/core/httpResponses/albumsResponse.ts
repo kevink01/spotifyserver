@@ -1,5 +1,5 @@
-import { Album } from '..';
+import { AlbumFull, AlbumSimplified } from '..';
 
 export interface AlbumsResponse {
-	albums: Album[];
+	albums: AlbumSimplified[] | AlbumFull[];
 }

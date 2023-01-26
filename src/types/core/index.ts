@@ -6,7 +6,7 @@ export { CurrentUser } from './user';
 export { Track, FullTrack } from './track';
 export { Playlist } from './playlist';
 export { Artist } from './artist';
-export { Album } from './album';
+export { AlbumSimplified, AlbumFull } from './album';
 export { Copyright } from './copyright';
 export { Follower } from './follower';
 export { PlaylistDetails } from './playlistDetails';

@@ -1,11 +1,14 @@
 import { Copyright, Core, Image, Track } from '.';
 
-export interface Album extends Core {
+export interface AlbumSimplified extends Core {
 	artists: Core[];
-	copyrights: Copyright[];
 	date: Date;
-	genres: string[];
 	images: Image[];
+	tracks: number | Track[];
+}
+
+export interface AlbumFull extends AlbumSimplified {
+	copyrights: Copyright[];
+	genres: string[];
 	popularity: number;
-	tracks: Track[];
 }
