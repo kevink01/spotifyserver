@@ -1,7 +1,7 @@
-import { Playlist } from '..';
+import { FullPlaylist } from '../core';
 
 export interface FeaturedPlaylistsResponse {
 	message: string;
-	playlists: Playlist[];
+	playlists: FullPlaylist[];
 	total: number;
 }

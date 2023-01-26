@@ -1,6 +1,7 @@
 import { images } from '..';
-import { Core, Device, Playback } from '../../types/core';
-import { DevicesResponse } from '../../types/core/httpResponses';
+import { Core, Playback } from '../../types/core';
+import { Device } from '../../types/util';
+import { DevicesResponse } from '../../types/httpResponses';
 
 interface Positon {
 	position: number;

@@ -4,7 +4,7 @@ import { logger } from './utility';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import SpotifyWebApi from 'spotify-web-api-node';
-import { Login } from './types/core';
+import { Login } from './types/util';
 import { albumRoutes, artistRoutes, playlistRoutes, profileRoutes, userRoutes } from './routes';
 import { track } from './routes';
 

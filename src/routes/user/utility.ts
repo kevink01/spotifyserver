@@ -1,6 +1,8 @@
-import { AlbumFull, Artist, Copyright, Core, CurrentUser, FullTrack, Image, Playlist, Track } from '../../types/core';
-import { AlbumsResponse, ArtistsResponse, PlaylistsResponse, TracksResponse } from '../../types/core/httpResponses';
+import { FullAlbum, Artist, Core, CurrentUser, FullTrack, Playlist, Track, FullPlaylist } from '../../types/core';
+import { Copyright, Image } from '../../types/util';
+import { AlbumsResponse, ArtistsResponse, PlaylistsResponse, TracksResponse } from '../../types/httpResponses';
 import { spotify } from '../../app';
+import { images } from '..';
 
 export function me(data: SpotifyApi.CurrentUsersProfileResponse): CurrentUser {
 	return {
@@ -25,18 +27,12 @@ export function me(data: SpotifyApi.CurrentUsersProfileResponse): CurrentUser {
 
 export function playlists(data: SpotifyApi.ListOfCurrentUsersPlaylistsResponse): PlaylistsResponse {
 	return {
-		playlists: data.items.map((playlist: SpotifyApi.PlaylistObjectSimplified): Playlist => {
+		playlists: data.items.map((playlist: SpotifyApi.PlaylistObjectSimplified): FullPlaylist => {
 			return {
 				collaborative: playlist.collaborative,
 				description: playlist.description ?? '',
 				id: playlist.id,
-				images: playlist.images.map((image: SpotifyApi.ImageObject): Image => {
-					return {
-						height: image.height ?? 0,
-						width: image.width ?? 0,
-						url: image.url
-					};
-				}),
+				images: images(playlist.images),
 				name: playlist.name,
 				owner: {
 					id: playlist.owner.id,
@@ -79,7 +75,7 @@ export function artists(data: SpotifyApi.UsersFollowedArtistsResponse): ArtistsR
 
 export function albums(data: SpotifyApi.UsersSavedAlbumsResponse): AlbumsResponse {
 	return {
-		albums: data.items.map((item: SpotifyApi.SavedAlbumObject): AlbumFull => {
+		albums: data.items.map((item: SpotifyApi.SavedAlbumObject): FullAlbum => {
 			return {
 				artists: item.album.artists.map((artist: SpotifyApi.ArtistObjectSimplified): Core => {
 					return {

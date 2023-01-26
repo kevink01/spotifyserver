@@ -1,6 +1,8 @@
 import { spotify } from '../../app';
-import { Core, FullTrack, Image, Playlist, PlaylistDetails } from '../../types/core';
-import { FeaturedPlaylistsResponse } from '../../types/core/httpResponses';
+import { Core, FullPlaylist, FullTrack, Playlist } from '../../types/core';
+import { Image, PlaylistDetails } from '../../types/util';
+import { FeaturedPlaylistsResponse } from '../../types/httpResponses';
+import { images } from '..';
 
 export function playlistTracks(data: SpotifyApi.SinglePlaylistResponse): Promise<Playlist> {
 	const calls = Math.floor(data.tracks.total / 100) + 1;
@@ -56,18 +58,12 @@ export function playlistTracks(data: SpotifyApi.SinglePlaylistResponse): Promise
 				});
 			})
 		)
-			.then((tracks: FullTrack[]): Playlist => {
+			.then((tracks: FullTrack[]): FullPlaylist => {
 				return {
 					collaborative: data.collaborative,
 					description: data.description ?? '',
 					id: data.id,
-					images: data.images.map((image: SpotifyApi.ImageObject): Image => {
-						return {
-							height: image.height ?? 0,
-							width: image.width ?? 0,
-							url: image.url
-						};
-					}),
+					images: images(data.images),
 					name: data.name,
 					owner: {
 						id: data.owner.id,
@@ -104,18 +100,12 @@ export function createPlaylist(data: SpotifyApi.CreatePlaylistResponse): Playlis
 export function featuredPlaylists(data: SpotifyApi.ListOfFeaturedPlaylistsResponse): FeaturedPlaylistsResponse {
 	return {
 		message: data.message ?? '',
-		playlists: data.playlists.items.map((playlist: SpotifyApi.PlaylistObjectSimplified): Playlist => {
+		playlists: data.playlists.items.map((playlist: SpotifyApi.PlaylistObjectSimplified): FullPlaylist => {
 			return {
 				collaborative: playlist.collaborative,
 				description: playlist.description ?? '',
 				id: playlist.id,
-				images: playlist.images.map((image: SpotifyApi.ImageObject): Image => {
-					return {
-						height: image.height ?? 0,
-						width: image.width ?? 0,
-						url: image.url
-					};
-				}),
+				images: images(playlist.images),
 				name: playlist.name,
 				owner: {
 					id: playlist.owner.id,

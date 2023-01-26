@@ -1,11 +1,15 @@
-import { Core, Image, Track } from './';
+import { Core, Track } from '.';
+import { Image } from '../util';
 
 export interface Playlist extends Core {
 	collaborative: boolean;
 	description: string;
-	images: Image[];
-	owner: Core;
 	public: boolean;
 	snapshot: string;
+}
+
+export interface FullPlaylist extends Playlist {
+	images: Image[];
+	owner: Core;
 	tracks: number | Track[];
 }

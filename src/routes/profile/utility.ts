@@ -1,5 +1,7 @@
-import { Follower, Image, Playlist, Profile } from '../../types/core';
-import { FollowersResponse, PlaylistsResponse } from '../../types/core/httpResponses';
+import { FullPlaylist, Profile } from '../../types/core';
+import { Follower, Image } from '../../types/util';
+import { FollowersResponse, PlaylistsResponse } from '../../types/httpResponses';
+import { images } from '..';
 
 export function profile(data: SpotifyApi.UserProfileResponse): Profile {
 	return {
@@ -21,19 +23,12 @@ export function profile(data: SpotifyApi.UserProfileResponse): Profile {
 
 export function userPlaylists(data: SpotifyApi.ListOfUsersPlaylistsResponse): PlaylistsResponse {
 	return {
-		playlists: data.items.map((playlist: SpotifyApi.PlaylistObjectSimplified): Playlist => {
+		playlists: data.items.map((playlist: SpotifyApi.PlaylistObjectSimplified): FullPlaylist => {
 			return {
 				collaborative: playlist.collaborative,
 				description: playlist.description ?? '',
 				id: playlist.id,
-				images:
-					playlist.images?.map((image: SpotifyApi.ImageObject): Image => {
-						return {
-							height: image.height ?? 0,
-							width: image.width ?? 0,
-							url: image.url
-						};
-					}) ?? [],
+				images: images(playlist.images),
 				name: playlist.name,
 				owner: {
 					id: playlist.owner.id,

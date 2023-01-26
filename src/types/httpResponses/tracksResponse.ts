@@ -1,4 +1,4 @@
-import { FullTrack, Track } from '..';
+import { FullTrack, Track } from '../core';
 
 export interface TracksResponse {
 	tracks: Track[] | FullTrack[];

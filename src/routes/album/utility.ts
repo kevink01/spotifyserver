@@ -1,9 +1,9 @@
-import SpotifyWebApi from 'spotify-web-api-node';
 import { images } from '..';
-import { AlbumFull, Copyright, Core, Follower, Track } from '../../types/core';
-import { FollowersResponse } from '../../types/core/httpResponses';
+import { FullAlbum, Core, Track } from '../../types/core';
+import { Copyright, Follower } from '../../types/util';
+import { FollowersResponse } from '../../types/httpResponses';
 
-export function album(data: SpotifyApi.SingleAlbumResponse): AlbumFull {
+export function album(data: SpotifyApi.SingleAlbumResponse): FullAlbum {
 	return {
 		artists: data.artists.map((artist: SpotifyApi.ArtistObjectSimplified): Core => {
 			return {

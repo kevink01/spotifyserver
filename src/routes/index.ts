@@ -4,13 +4,20 @@ import profileRoutes from './profile/routes';
 import playbackRoutes from './playback/routes';
 import playlistRoutes from './playlist/routes';
 import userRoutes from './user/routes';
-import { Image, Snapshot, Success } from '../types/core';
+import { Core, FullTrack } from '../types/core';
+import { Image, Playing, Snapshot, Success } from '../types/util';
 
 export { albumRoutes, artistRoutes, profileRoutes, playbackRoutes, playlistRoutes, userRoutes };
 
 export function success(value: boolean): Success {
 	return {
 		success: value
+	};
+}
+
+export function playing(value: boolean): Playing {
+	return {
+		playing: value
 	};
 }
 

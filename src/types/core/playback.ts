@@ -1,4 +1,5 @@
-import { Device, FullTrack } from '.';
+import { FullTrack } from '.';
+import { Device } from '../util';
 
 export interface Playback {
 	device: Device;

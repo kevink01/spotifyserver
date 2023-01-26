@@ -1,4 +1,4 @@
-import { Core } from '.';
+import { Core } from '../core';
 
 export interface PlaylistDetails extends Core {
 	collaborative: boolean;
