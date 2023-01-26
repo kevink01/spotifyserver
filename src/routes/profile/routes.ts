@@ -1,8 +1,8 @@
 import { Request, Response, Router } from 'express';
-import { success } from '..';
 import { spotify } from '../../app';
 import { logger } from '../../utility';
 import { isFollowing, profile, userPlaylists } from './utility';
+import { success } from '..';
 
 const router: Router = Router();
 
@@ -18,11 +18,11 @@ router.get('/', (req: Request, res: Response) => {
 		});
 });
 
-router.get('/playlists', (req: Request, res: Response) => {
+router.post('/follow', (req: Request, res: Response) => {
 	spotify
-		.getUserPlaylists(req.query.id as string)
-		.then((data) => {
-			res.status(200).send(userPlaylists(data.body));
+		.followUsers(req.body.id as string[])
+		.then(() => {
+			res.status(200).send(success(true));
 		})
 		.catch((err) => {
 			logger.error(err);
@@ -42,11 +42,11 @@ router.get('/following', (req: Request, res: Response) => {
 		});
 });
 
-router.post('/follow', (req: Request, res: Response) => {
+router.get('/playlists', (req: Request, res: Response) => {
 	spotify
-		.followUsers(req.body.id as string[])
-		.then(() => {
-			res.status(200).send(success(true));
+		.getUserPlaylists(req.query.id as string)
+		.then((data) => {
+			res.status(200).send(userPlaylists(data.body));
 		})
 		.catch((err) => {
 			logger.error(err);

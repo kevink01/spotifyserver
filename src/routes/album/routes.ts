@@ -1,8 +1,8 @@
 import { Request, Response, Router } from 'express';
-import { success } from '..';
 import { spotify } from '../../app';
 import { logger } from '../../utility';
 import { album, containsSavedAlbums } from './utility';
+import { success } from '..';
 
 const router: Router = Router();
 
@@ -18,19 +18,7 @@ router.get('/', (req: Request, res: Response) => {
 		});
 });
 
-router.get('/following', (req: Request, res: Response) => {
-	spotify
-		.containsMySavedAlbums(req.query.id as string[])
-		.then((data) => {
-			res.status(200).send(containsSavedAlbums(req.query.id as string[], data.body));
-		})
-		.catch((err) => {
-			logger.error(err);
-			res.status(err.statusCode).send(err.body.error);
-		});
-});
-
-router.post('/album/add', (req: Request, res: Response) => {
+router.post('/add', (req: Request, res: Response) => {
 	switch (req.body.following as boolean) {
 		case true:
 			spotify
@@ -59,6 +47,18 @@ router.post('/album/add', (req: Request, res: Response) => {
 			res.sendStatus(400);
 			break;
 	}
+});
+
+router.get('/following', (req: Request, res: Response) => {
+	spotify
+		.containsMySavedAlbums(req.query.id as string[])
+		.then((data) => {
+			res.status(200).send(containsSavedAlbums(req.query.id as string[], data.body));
+		})
+		.catch((err) => {
+			logger.error(err);
+			res.status(err.statusCode).send(err.body.error);
+		});
 });
 
 export default router;

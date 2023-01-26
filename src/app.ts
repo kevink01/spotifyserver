@@ -1,14 +1,23 @@
-import express, { NextFunction, Request, Response } from 'express';
-import { Config } from './interfaces';
-import { logger } from './utility';
+import express, { Request, Response } from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import SpotifyWebApi from 'spotify-web-api-node';
-import { Login } from './types/util';
-import { albumRoutes, artistRoutes, playlistRoutes, profileRoutes, userRoutes } from './routes';
-import { track } from './routes';
+
+import {
+	albumRoutes,
+	artistRoutes,
+	login,
+	playbackRoutes,
+	playlistRoutes,
+	profileRoutes,
+	track,
+	userRoutes
+} from './routes';
+import { Config } from './types/util';
+import { logger } from './utility';
 
 const app = express();
+
 app.use(cors());
 app.use(express.json());
 dotenv.config({ path: './.env' });
@@ -19,22 +28,19 @@ const config: Config = {
 	redirectUri: 'http://localhost:4200/login',
 	port: 3030
 };
-
 export const spotify = new SpotifyWebApi({
 	clientId: config.clientID,
 	clientSecret: config.clientSecret,
 	redirectUri: config.redirectUri
 });
 
+/* Define routes */
 app.use('/album', albumRoutes);
 app.use('/artist', artistRoutes);
-app.use('/profile', profileRoutes);
+app.use('/playback', playbackRoutes);
 app.use('/playlist', playlistRoutes);
+app.use('/profile', profileRoutes);
 app.use('/user', userRoutes);
-
-app.listen(config.port, () => {
-	logger.info(`Listening on port ${config.port}`);
-});
 
 app.post('/login', (req: Request, res: Response) => {
 	spotify
@@ -62,10 +68,6 @@ app.get('/track', (req: Request, res: Response) => {
 		});
 });
 
-function login(data: any): Login {
-	return {
-		access: data.body.access_token,
-		expires: data.body.expires_in,
-		refresh: data.body.refresh_token
-	};
-}
+app.listen(config.port, () => {
+	logger.info(`Listening on port ${config.port}`);
+});

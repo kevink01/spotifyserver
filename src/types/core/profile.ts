@@ -1,4 +1,5 @@
-import { Core, Image } from './';
+import { Core } from '.';
+import { Image } from '../util';
 
 export interface Profile extends Core {
 	followers: number;

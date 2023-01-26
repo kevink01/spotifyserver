@@ -1,20 +1,24 @@
 import { FullPlaylist, Profile } from '../../types/core';
-import { Follower, Image } from '../../types/util';
 import { FollowersResponse, PlaylistsResponse } from '../../types/httpResponses';
+import { Follower } from '../../types/util';
 import { images } from '..';
+
+export function isFollowing(ids: string[], data: SpotifyApi.UserFollowsUsersOrArtistsResponse): FollowersResponse {
+	return {
+		followers: data.map((value: boolean, index: number): Follower => {
+			return {
+				id: ids[index],
+				following: value
+			};
+		})
+	};
+}
 
 export function profile(data: SpotifyApi.UserProfileResponse): Profile {
 	return {
 		followers: data.followers?.total ?? 0,
 		id: data.id,
-		images:
-			data.images?.map((image: SpotifyApi.ImageObject): Image => {
-				return {
-					height: image.height ?? 0,
-					width: image.width ?? 0,
-					url: image.url
-				};
-			}) ?? [],
+		images: images(data.images ?? []),
 		name: data.display_name ?? '',
 		type: data.type,
 		uri: data.uri
@@ -41,17 +45,6 @@ export function userPlaylists(data: SpotifyApi.ListOfUsersPlaylistsResponse): Pl
 				tracks: playlist.tracks.total,
 				type: playlist.type,
 				uri: playlist.uri
-			};
-		})
-	};
-}
-
-export function isFollowing(ids: string[], data: SpotifyApi.UserFollowsUsersOrArtistsResponse): FollowersResponse {
-	return {
-		followers: data.map((value: boolean, index: number): Follower => {
-			return {
-				id: ids[index],
-				following: value
 			};
 		})
 	};

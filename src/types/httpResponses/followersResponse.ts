@@ -1,4 +1,4 @@
-import { Follower } from '../core';
+import { Follower } from '../util';
 
 export interface FollowersResponse {
 	followers: Follower[];

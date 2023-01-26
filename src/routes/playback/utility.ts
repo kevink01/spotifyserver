@@ -1,19 +1,7 @@
-import { images } from '..';
 import { Core, Playback } from '../../types/core';
-import { Device } from '../../types/util';
 import { DevicesResponse } from '../../types/httpResponses';
-
-interface Positon {
-	position: number;
-}
-
-interface Shuffle {
-	shuffle: boolean;
-}
-
-interface Repeat {
-	repeat: string;
-}
+import { Device, Positon, Repeat, Shuffle } from '../../types/util';
+import { images } from '..';
 
 export function devices(data: SpotifyApi.UserDevicesResponse): DevicesResponse {
 	return {
@@ -81,14 +69,14 @@ export function position(value: number): Positon {
 	};
 }
 
-export function shuffle(value: boolean): Shuffle {
-	return {
-		shuffle: value
-	};
-}
-
 export function repeat(value: string): Repeat {
 	return {
 		repeat: value
+	};
+}
+
+export function shuffle(value: boolean): Shuffle {
+	return {
+		shuffle: value
 	};
 }

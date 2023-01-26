@@ -1,7 +1,7 @@
-import { images } from '..';
 import { FullAlbum, Core, Track } from '../../types/core';
-import { Copyright, Follower } from '../../types/util';
 import { FollowersResponse } from '../../types/httpResponses';
+import { Copyright, Follower } from '../../types/util';
+import { images } from '..';
 
 export function album(data: SpotifyApi.SingleAlbumResponse): FullAlbum {
 	return {

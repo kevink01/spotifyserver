@@ -1,6 +1,6 @@
-import { images } from '..';
 import { Album, Artist, Core, FullTrack } from '../../types/core';
 import { AlbumsResponse, ArtistsResponse, TracksResponse } from '../../types/httpResponses';
+import { images } from '..';
 
 export function artist(data: SpotifyApi.SingleArtistResponse): Artist {
 	return {

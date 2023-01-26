@@ -1,4 +1,4 @@
-import { Profile } from './';
+import { Profile } from '.';
 
 export interface CurrentUser extends Profile {
 	country: string;

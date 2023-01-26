@@ -1,4 +1,5 @@
-import { Core, Image } from '.';
+import { Core } from '.';
+import { Image } from '../util';
 
 interface TrackCore extends Core {
 	artists: Core[];

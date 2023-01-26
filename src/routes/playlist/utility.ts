@@ -1,8 +1,48 @@
 import { spotify } from '../../app';
 import { Core, FullPlaylist, FullTrack, Playlist } from '../../types/core';
-import { Image, PlaylistDetails } from '../../types/util';
 import { FeaturedPlaylistsResponse } from '../../types/httpResponses';
+import { Image, PlaylistDetails } from '../../types/util';
 import { images } from '..';
+
+export function createPlaylist(data: SpotifyApi.CreatePlaylistResponse): PlaylistDetails {
+	return {
+		collaborative: data.collaborative,
+		description: data.description ?? '',
+		id: data.id,
+		name: data.name,
+		public: data.public ?? false,
+		snapshot: data.snapshot_id,
+		type: data.type,
+		uri: data.uri
+	};
+}
+
+export function featuredPlaylists(data: SpotifyApi.ListOfFeaturedPlaylistsResponse): FeaturedPlaylistsResponse {
+	return {
+		message: data.message ?? '',
+		playlists: data.playlists.items.map((playlist: SpotifyApi.PlaylistObjectSimplified): FullPlaylist => {
+			return {
+				collaborative: playlist.collaborative,
+				description: playlist.description ?? '',
+				id: playlist.id,
+				images: images(playlist.images),
+				name: playlist.name,
+				owner: {
+					id: playlist.owner.id,
+					name: playlist.owner.display_name ?? '',
+					type: playlist.owner.type,
+					uri: playlist.owner.uri
+				},
+				public: playlist.public ?? false,
+				snapshot: playlist.snapshot_id,
+				tracks: playlist.tracks.total,
+				type: playlist.type,
+				uri: playlist.uri
+			};
+		}),
+		total: data.playlists.total
+	};
+}
 
 export function playlistTracks(data: SpotifyApi.SinglePlaylistResponse): Promise<Playlist> {
 	const calls = Math.floor(data.tracks.total / 100) + 1;
@@ -82,44 +122,4 @@ export function playlistTracks(data: SpotifyApi.SinglePlaylistResponse): Promise
 				throw new Error(err);
 			});
 	});
-}
-
-export function createPlaylist(data: SpotifyApi.CreatePlaylistResponse): PlaylistDetails {
-	return {
-		collaborative: data.collaborative,
-		description: data.description ?? '',
-		id: data.id,
-		name: data.name,
-		public: data.public ?? false,
-		snapshot: data.snapshot_id,
-		type: data.type,
-		uri: data.uri
-	};
-}
-
-export function featuredPlaylists(data: SpotifyApi.ListOfFeaturedPlaylistsResponse): FeaturedPlaylistsResponse {
-	return {
-		message: data.message ?? '',
-		playlists: data.playlists.items.map((playlist: SpotifyApi.PlaylistObjectSimplified): FullPlaylist => {
-			return {
-				collaborative: playlist.collaborative,
-				description: playlist.description ?? '',
-				id: playlist.id,
-				images: images(playlist.images),
-				name: playlist.name,
-				owner: {
-					id: playlist.owner.id,
-					name: playlist.owner.display_name ?? '',
-					type: playlist.owner.type,
-					uri: playlist.owner.uri
-				},
-				public: playlist.public ?? false,
-				snapshot: playlist.snapshot_id,
-				tracks: playlist.tracks.total,
-				type: playlist.type,
-				uri: playlist.uri
-			};
-		}),
-		total: data.playlists.total
-	};
 }

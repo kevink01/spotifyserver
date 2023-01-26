@@ -1,8 +1,8 @@
 import { Request, Response, Router } from 'express';
-import { snapshot, success } from '..';
 import { spotify } from '../../app';
 import { logger } from '../../utility';
 import { createPlaylist, featuredPlaylists, playlistTracks } from './utility';
+import { snapshot, success } from '..';
 
 const router: Router = Router();
 
@@ -18,22 +18,6 @@ router.get('/', (req: Request, res: Response) => {
 					logger.error(err);
 					res.status(err.statusCode).send(err.body.error);
 				});
-		})
-		.catch((err) => {
-			logger.error(err);
-			res.status(err.statusCode).send(err.body.error);
-		});
-});
-
-router.post('/new', (req: Request, res: Response) => {
-	spotify
-		.createPlaylist(req.body.name, {
-			description: req.body.description,
-			public: req.body.public,
-			collaborative: req.body.collaborative
-		})
-		.then((data) => {
-			res.status(200).send(createPlaylist(data.body));
 		})
 		.catch((err) => {
 			logger.error(err);
@@ -58,12 +42,50 @@ router.put('/details', (req: Request, res: Response) => {
 		});
 });
 
+router.get('/featured', (req: Request, res: Response) => {
+	spotify
+		.getFeaturedPlaylists()
+		.then((data) => {
+			res.status(200).send(featuredPlaylists(data.body));
+		})
+		.catch((err) => {
+			logger.error(err);
+			res.status(err.statusCode).send(err.body.error);
+		});
+});
+
 router.post('/image', (req: Request, res: Response) => {
 	spotify
 		.uploadCustomPlaylistCoverImage(req.body.id, req.body.image)
 		.then(() => {
 			res.status(200).send(success(true));
 		})
+		.catch((err) => {
+			logger.error(err);
+			res.status(err.statusCode).send(err.body.error);
+		});
+});
+
+router.post('/new', (req: Request, res: Response) => {
+	spotify
+		.createPlaylist(req.body.name, {
+			description: req.body.description,
+			public: req.body.public,
+			collaborative: req.body.collaborative
+		})
+		.then((data) => {
+			res.status(200).send(createPlaylist(data.body));
+		})
+		.catch((err) => {
+			logger.error(err);
+			res.status(err.statusCode).send(err.body.error);
+		});
+});
+
+router.delete('/playlist', (req: Request, res: Response) => {
+	spotify
+		.unfollowPlaylist(req.body.id)
+		.then(() => res.status(200).send(success(true)))
 		.catch((err) => {
 			logger.error(err);
 			res.status(err.statusCode).send(err.body.error);
@@ -126,28 +148,6 @@ router.put('/tracks/reorder', async (req: Request, res: Response) => {
 	if (!sent) {
 		res.status(200).send({ snapshot: snapshot });
 	}
-});
-
-router.delete('/playlist', (req: Request, res: Response) => {
-	spotify
-		.unfollowPlaylist(req.body.id)
-		.then(() => res.status(200).send(success(true)))
-		.catch((err) => {
-			logger.error(err);
-			res.status(err.statusCode).send(err.body.error);
-		});
-});
-
-router.get('/featured', (req: Request, res: Response) => {
-	spotify
-		.getFeaturedPlaylists()
-		.then((data) => {
-			res.status(200).send(featuredPlaylists(data.body));
-		})
-		.catch((err) => {
-			logger.error(err);
-			res.status(err.statusCode).send(err.body.error);
-		});
 });
 
 export default router;

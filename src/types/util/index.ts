@@ -1,3 +1,4 @@
+export { Config } from './config';
 export { Copyright } from './copyright';
 export { Device } from './device';
 export { Follower } from './follower';
@@ -5,5 +6,6 @@ export { Image } from './image';
 export { Login } from './login';
 export { Playing } from './playing';
 export { PlaylistDetails } from './playlistDetails';
+export { Positon, Repeat, Shuffle } from './playback';
 export { Snapshot } from './snapshot';
 export { Success } from './success';
