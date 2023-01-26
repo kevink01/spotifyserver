@@ -1,4 +1,4 @@
-import { Album, Artist, Copyright, Core, CurrentUser, FullTrack, Image, Playlist, Track } from '../../types/core';
+import { AlbumFull, Artist, Copyright, Core, CurrentUser, FullTrack, Image, Playlist, Track } from '../../types/core';
 import { AlbumsResponse, ArtistsResponse, PlaylistsResponse, TracksResponse } from '../../types/core/httpResponses';
 import { spotify } from '../../app';
 
@@ -79,7 +79,7 @@ export function artists(data: SpotifyApi.UsersFollowedArtistsResponse): ArtistsR
 
 export function albums(data: SpotifyApi.UsersSavedAlbumsResponse): AlbumsResponse {
 	return {
-		albums: data.items.map((item: SpotifyApi.SavedAlbumObject): Album => {
+		albums: data.items.map((item: SpotifyApi.SavedAlbumObject): AlbumFull => {
 			return {
 				artists: item.album.artists.map((artist: SpotifyApi.ArtistObjectSimplified): Core => {
 					return {

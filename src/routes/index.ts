@@ -1,10 +1,11 @@
+import albumRoutes from './album/routes';
 import artistRoutes from './artist/routes';
 import profileRoutes from './profile/routes';
 import playlistRoutes from './playlist/routes';
 import userRoutes from './user/routes';
 import { Image, Snapshot, Success } from '../types/core';
 
-export { artistRoutes, profileRoutes, playlistRoutes, userRoutes };
+export { albumRoutes, artistRoutes, profileRoutes, playlistRoutes, userRoutes };
 
 export function success(value: boolean): Success {
 	return {

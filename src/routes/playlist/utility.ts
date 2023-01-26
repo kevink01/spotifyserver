@@ -1,6 +1,5 @@
-import { Request, Response, Router } from 'express';
 import { spotify } from '../../app';
-import { Core, FullTrack, Image, Playlist, PlaylistDetails, Track } from '../../types/core';
+import { Core, FullTrack, Image, Playlist, PlaylistDetails } from '../../types/core';
 import { FeaturedPlaylistsResponse } from '../../types/core/httpResponses';
 
 export function playlistTracks(data: SpotifyApi.SinglePlaylistResponse): Promise<Playlist> {
