@@ -6,6 +6,7 @@ import cors from 'cors';
 import SpotifyWebApi from 'spotify-web-api-node';
 import { Login } from './types/core';
 import { albumRoutes, artistRoutes, playlistRoutes, profileRoutes, userRoutes } from './routes';
+import { track } from './routes';
 
 const app = express();
 app.use(cors());
@@ -25,15 +26,6 @@ export const spotify = new SpotifyWebApi({
 	redirectUri: config.redirectUri
 });
 
-app.use((req: Request, _res: Response, next: NextFunction) => {
-	req.headers.accept = 'application/json';
-	req.acceptsEncodings(['gzip', 'deflate', 'br']);
-	req.headers['accept-language'] = 'en-US,en;q=0.5';
-	req.headers['access-control-allow-origin'] = 'cors';
-	req.headers.connection = 'keep-alive';
-	next();
-});
-
 app.use('/album', albumRoutes);
 app.use('/artist', artistRoutes);
 app.use('/profile', profileRoutes);
@@ -51,6 +43,18 @@ app.post('/login', (req: Request, res: Response) => {
 			spotify.setAccessToken(data.body.access_token);
 			spotify.setRefreshToken(data.body.refresh_token);
 			res.status(200).send(login(data));
+		})
+		.catch((err) => {
+			logger.error(err);
+			res.status(err.statusCode).send(err.body.error);
+		});
+});
+
+app.get('/track', (req: Request, res: Response) => {
+	spotify
+		.getTrack(req.body.id as string)
+		.then((data) => {
+			res.status(200).send(track(data.body));
 		})
 		.catch((err) => {
 			logger.error(err);

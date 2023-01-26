@@ -1,11 +1,12 @@
 import albumRoutes from './album/routes';
 import artistRoutes from './artist/routes';
 import profileRoutes from './profile/routes';
+import playbackRoutes from './playback/routes';
 import playlistRoutes from './playlist/routes';
 import userRoutes from './user/routes';
 import { Image, Snapshot, Success } from '../types/core';
 
-export { albumRoutes, artistRoutes, profileRoutes, playlistRoutes, userRoutes };
+export { albumRoutes, artistRoutes, profileRoutes, playbackRoutes, playlistRoutes, userRoutes };
 
 export function success(value: boolean): Success {
 	return {
@@ -27,4 +28,35 @@ export function images(data: SpotifyApi.ImageObject[]): Image[] {
 			url: image.url
 		};
 	});
+}
+
+export function track(data: SpotifyApi.SingleTrackResponse): FullTrack {
+	return {
+		album: {
+			date: new Date(data.album.release_date),
+			id: data.album.id,
+			images: images(data.album.images),
+			name: data.album.name,
+			type: data.album.type,
+			uri: data.album.uri
+		},
+		artists: data.artists.map((artist: SpotifyApi.ArtistObjectSimplified): Core => {
+			return {
+				id: artist.id,
+				name: artist.name,
+				type: artist.type,
+				uri: artist.uri
+			};
+		}),
+		date: new Date(data.album.release_date),
+		duration: data.duration_ms,
+		explicit: data.explicit,
+		id: data.id,
+		local: data.is_local ?? false,
+		name: data.name,
+		number: data.track_number,
+		popularity: data.popularity,
+		type: data.type,
+		uri: data.uri
+	};
 }

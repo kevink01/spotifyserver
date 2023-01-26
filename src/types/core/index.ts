@@ -10,3 +10,6 @@ export { AlbumSimplified, AlbumFull } from './album';
 export { Copyright } from './copyright';
 export { Follower } from './follower';
 export { PlaylistDetails } from './playlistDetails';
+export { Device } from './device';
+export { Playback } from './playback';
+export { Playing } from './playing';
