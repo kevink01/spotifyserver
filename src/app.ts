@@ -11,7 +11,7 @@ import {
 	playlistRoutes,
 	profileRoutes,
 	track,
-	userRoutes
+	userRoutes,
 } from './routes';
 import { Config } from './types/util';
 import { logger } from './utility';
@@ -25,13 +25,13 @@ dotenv.config({ path: './.env' });
 const config: Config = {
 	clientID: process.env.CLIENT_ID as string,
 	clientSecret: process.env.CLIENT_SECRET as string,
-	redirectUri: 'http://localhost:4200/login',
-	port: 3030
+	redirectUri: 'http://localhost:3000/login',
+	port: 3030,
 };
 export const spotify = new SpotifyWebApi({
 	clientId: config.clientID,
 	clientSecret: config.clientSecret,
-	redirectUri: config.redirectUri
+	redirectUri: config.redirectUri,
 });
 
 /* Define routes */
@@ -44,21 +44,22 @@ app.use('/user', userRoutes);
 
 app.post('/login', (req: Request, res: Response) => {
 	spotify
-		.authorizationCodeGrant(JSON.parse(req.body.code))
+		.authorizationCodeGrant(req.body.code)
 		.then((data) => {
+			logger.info(data);
 			spotify.setAccessToken(data.body.access_token);
 			spotify.setRefreshToken(data.body.refresh_token);
 			res.status(200).send(login(data));
 		})
 		.catch((err) => {
-			logger.error(err);
-			res.status(err.statusCode).send(err.body.error);
+			logger.error(err.body);
+			res.status(400).send(err.body);
 		});
 });
 
 app.get('/track', (req: Request, res: Response) => {
 	spotify
-		.getTrack(req.body.id as string)
+		.getTrack(req.query.id as string)
 		.then((data) => {
 			res.status(200).send(track(data.body));
 		})

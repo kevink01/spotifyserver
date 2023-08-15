@@ -2,7 +2,6 @@
 	"name": "spotifyserver",
 	"version": "1.0.0",
 	"main": "src/app.ts",
-	"author": "Kevin Kulich <klpv733@gmail.com>",
 	"license": "MIT",
 	"scripts": {
 		"dev": "ts-node-dev --respawn --transpile-only src/app.ts"

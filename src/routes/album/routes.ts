@@ -22,7 +22,7 @@ router.post('/add', (req: Request, res: Response) => {
 	switch (req.body.following as boolean) {
 		case true:
 			spotify
-				.removeFromMySavedAlbums(req.body.id as string[])
+				.removeFromMySavedAlbums([req.body.id as string])
 				.then(() => {
 					res.status(200).send(success(true));
 				})
@@ -51,9 +51,9 @@ router.post('/add', (req: Request, res: Response) => {
 
 router.get('/following', (req: Request, res: Response) => {
 	spotify
-		.containsMySavedAlbums(req.query.id as string[])
+		.containsMySavedAlbums([req.query.id as string])
 		.then((data) => {
-			res.status(200).send(containsSavedAlbums(req.query.id as string[], data.body));
+			res.status(200).send(containsSavedAlbums([req.query.id as string], data.body));
 		})
 		.catch((err) => {
 			logger.error(err);
